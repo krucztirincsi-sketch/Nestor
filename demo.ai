@@ -1,0 +1,29 @@
+// Aion Demo: AI Inference with Nested Closures and Concurrency
+
+struct Config {
+    lr: f32,
+}
+
+fn main() {
+    let input = tensor::randn([1, 512]);
+    let weights = tensor::randn([512, 512]);
+
+    // Highly nested closure for custom logic
+    let model_logic = |data| {
+        return |w| {
+            // Built-in tensor multiplication and grad keyword
+            let output = data * w;
+            return output;
+        };
+    };
+
+    // Go-style concurrency
+    spawn model_logic(input)(weights);
+
+    // High-level model support (Compiler optimizes this)
+    let llm = model Llama {
+        fn forward(self, x) {
+            return self.layers.apply(x);
+        }
+    };
+}
