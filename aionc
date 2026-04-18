@@ -1,0 +1,17 @@
+#!/bin/bash
+# Aion Compiler Wrapper
+
+# Find the binary
+BINARY="./target/release/aion-compiler"
+
+if [ ! -f "$BINARY" ]; then
+    echo "Compiler binary not found. Building..."
+    cargo build --release > /dev/null 2>&1
+fi
+
+if [ -z "$1" ]; then
+    echo "Usage: aionc <source_file.ai>"
+    exit 1
+fi
+
+$BINARY "$1"
