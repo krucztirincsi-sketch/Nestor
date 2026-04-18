@@ -10,9 +10,15 @@ use mlir::MLIRGenerator;
 use codegen::LLMOptimizer;
 
 use std::fs;
+use std::env;
 
 fn main() {
-    let input = fs::read_to_string("demo.ai").expect("Failed to read demo.ai");
+    let args: Vec<String> = env::args().collect();
+    if args.len() < 2 {
+        println!("Usage: aion-compiler <file.ai>");
+        return;
+    }
+    let input = fs::read_to_string(&args[1]).expect("Failed to read input file");
     let lexer = Lexer::new(&input);
     let mut parser = Parser::new(lexer);
     let mut program = parser.parse_program();
